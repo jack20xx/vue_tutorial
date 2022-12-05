@@ -6,51 +6,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
-    <style>
-        [v-cloak]{
-            display: none;
-        }
-    </style>
 </head>
 <body>
-    <div id="app"> <!-- 仮想DOM -->
-       
-    </div>
+                   <!--仮想DOMの範囲でVueの機能を利用できる -->
+                   <!--DOMとはHTMLをプログラムから操作できる仕組み -->
+    <!--リアルDOM 
+    動作としては問題ないが、タグを見ただけでJSがつながっているかどうかわからないのが難点
+    script内を詳しく見てJSの存在を確認する必要がある。-->
+    <a id="google_link">googleへのリンク</a>
+
+    <div id="app"> <!--仮想DOM-->
+        {{ message }}
+    </div>         
 
     <script>
-        let app = new Vue({
-            el:'#app',
-            data(){
-                return {
-                   test: 'あああ'
-                }
-            },
-            created(){
-                console.log('created')
-                console.log(this.$el)
-                console.log(this.test)
-            },
-            mounted(){
-                console.log('mounted')
-                console.log(this.$el)
-            }
-        })
-
-        console.log(this);
-
-        const obj = {
-            test: function(){
-                console.log(this)
+        // Vue.jsにはVueクラス（設計図）があらかじめ用意されている。
+        // 設計図のままでは使えないので、newを使ってインスタンス化（実体）する必要がある。
+        // Vueクラス->イ　ンスタンス化（実体）new
+        // それをappという変数の中に入れている。
+    let app = new Vue({
+        el: '#app', // elやdataはVue.jsにあらかじめ入っているAPI
+                    // elはElementの略、仮想DOMの範囲を指定している。
+                    // #はidを意味する。
+        // data: {
+        //     message: 'Hello Vue!'
+        // }
+        // 上記の書き方はコンポーネントを利用する際には適さないので、下記に書き換える。
+        
+        data(){ // data: function()[]、JSES6では左記のように省略できる。
+                // dataの内容を仮想DOM内に表示できる。
+            return {
+                message: 'Hello Vue!' // キー（key):値（value）の関係になっている。
+                                    　// キーに入っている値が表示されている。
             }
         }
+    }) 
 
-        const objArrow = {
-            test: () => {
-                console.log(this)
-            }
-        }
-    
-
+    // リアルDOMで直接操作しているパターン
+    // idを指定しているので、idが変わった場合にはその都度変更が必要。
+    const googleLink = document.getElementById('google_link');
+    googleLink.href = 'https://google.com';
+   
     </script>
 
 </body>
