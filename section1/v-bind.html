@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+</head>
+<body>
+    <a id="google_link">googleへのリンク</a>
+
+    <div id="app"> <!--仮想DOM-->
+        {{ message }}
+        <!--
+        <a href="{{google}}"></a>  タグの中では口ひげは使えない。
+        v-bindでタグに紐づけている。
+        -->
+        <!-- <a v-bind:href="google">googleへのリンク</a> 
+        下記に省略可能-->
+        <a :href="google">googleへのリンク</a>
+    </div>         
+
+    <script>
+        // Vueクラス->イ　ンスタンス化（実体）new
+        // それをappという変数の中に入れている。
+    let app = new Vue({
+        el: '#app', 
+        
+        data(){ //dataは初期設定のようなもの
+            return {
+                message: 'Hello Vue!',
+                google: 'https://google.com' 
+            }
+        }
+    }) 
+
+    // リアルDOMで直接操作しているパターン
+    // idを指定しているので、idが変わった場合にはその都度変更が必要。
+    const googleLink = document.getElementById('google_link');
+    googleLink.href = 'https://google.com';
+   
+    </script>
+
+</body>
+</html>
