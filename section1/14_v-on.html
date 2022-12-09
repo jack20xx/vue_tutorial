@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+</head>
+<body>
+    <!-- 普通のJSの場合 -->
+    <button onClick="btnClicked()">クリックしてね</button>
+
+    <div id="app"> <!--仮想DOM-->
+        <button v-on:click="btnClicked">クリックしてね</button>
+        <!--Vueの場合、 （）は要らない -->
+        <!-- 省略形 -->
+        <button @click="btnClicked">クリックしてね</button>
+    </div>
+
+    <script>
+    let app = new Vue({
+        el: '#app', 
+        data(){ 
+            return {
+
+            }
+        },
+        methods: {
+            btnClicked(){
+                console.log('Vueクリックされた')
+            }
+        }
+    }) 
+
+    function btnClicked(){
+        console.log('JSクリックされた')
+    }
+
+  
+   
+    </script>
+
+</body>
+</html>

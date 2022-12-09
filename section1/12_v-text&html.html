@@ -9,15 +9,18 @@
 </head>
 <body>
     <div id="app"> <!--仮想DOM-->
-
-    </div>
+        <div v-text="test"></div>
+        <!-- v-htmlはxss攻撃を受けた時に改竄される可能性があるため、
+            基本的にはtextのほうを使ったほうがいい -->
+        <div v-html="test"></div>
+    </div>         
 
     <script>
     let app = new Vue({
         el: '#app', 
         data(){ 
             return {
-
+                test: 'あああ <br> いいい'
             }
         }
     }) 
