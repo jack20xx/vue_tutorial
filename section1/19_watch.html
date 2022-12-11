@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app"> <!--仮想DOM-->
+        {{ totalPriceMethods() }}
+        {{ totalPriceMethods() }}
+        <!-- computedの場合、データの中身が変わらない限り、処理は１度しか実行されない。 -->
+        {{ totalPrice }}
+        {{ totalPrice }}
+    </div>
+
+    <script>
+    let app = new Vue({
+        el: '#app', 
+        data(){ 
+            return {
+                price: 1,
+                number: 1,
+                books: [
+                    {
+                        id: 1,
+                        title: 'タイトル1',
+                        author: '著者名1',
+                        url: 'https://google.com'
+                    },
+                    {
+                        id: 2,
+                        title: 'タイトル2',
+                        author: '著者名2',
+                        url: 'https://google.com'
+                    },
+                    {
+                        id: 3,
+                        title: 'タイトル3',
+                        author: '著者名3',
+                        url: 'https://google.com'
+                    },
+                ]
+            }
+        },
+        methods: {
+            totalPriceMethods(){
+                console.log('methodsです')
+                return this.number * this.price
+            }
+        },
+        computed: { //computedには必ずreturnが必要
+            // totalPrice(){
+            //     console.log('computedです')
+            //     return this.number * this.price
+            // }
+            // 上記だと毎回３行必要になるため処理が複数必要な場合には行数が多くなってしまう。
+            // 引数が１つの時は（app）のカッコは要らない。
+            // アロー関数の場合、{}もreturnも必要ない。
+            totalPrice: app => app.number * app.price
+        },
+        watch: {  //監視プロパティ。オブジェクトが変わった時の対応や複雑な処理が可能。
+                  //非同期処理やAjaxにも使える。
+            //dataのキーと合わせる。
+            books: {
+                handler(){ //オブジェクトを監視する
+                    console.log('変更されました')
+                },
+                deep: true //深い所まで監視する
+            }
+        }
+    }) 
+
+    console.log(this); //thisはwindow（画面）オブジェクト全体を指す
+
+    const obj = {
+        test: function(){
+            console.log(this) //オブジェクトの中に書くと、そのオブジェクトを参照する
+        }
+    }
+
+    const objArrow = {
+        test: () => {
+            console.log(this) //windowオブジェクトになってしまう。
+                              //そのため、アロー関数の場合にはvueインスタンス（今回はapp）を使う必要がある。
+        }
+    }
+   
+    </script>
+
+</body>
+</html>
