@@ -7,13 +7,16 @@
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
     <style>
+        [v-cloak]{
+            display: none;
+        }
         .error{
             color: red;
         }
     </style>
 </head>
 <body>
-    <div id="app"> <!--仮想DOM-->
+    <div id="app" v-cloak> <!--仮想DOM-->
         <p v-if="errors.length">
             <ul>
                 <li class="error" v-for="error in errors">{{ error }}</li>
@@ -23,8 +26,13 @@
         <form @submit.prevent="validate">
         <!-- .preventで再読み込みを防ぐことでエラー文を表示したままにできる -->
             氏名
-            <input type="text" v-model="contact.yourName">
+            <!-- computedで監視する際は、computedで設定したyourNameに書き換える -->
+            <input type="text" v-model="yourName">
             <br>
+            <!-- errorがtrueになったら表示される -->
+            <p :class="{error: hasError.yourName}"> {{ contact.yourName.length }} / 20</p>
+            <p v-show="hasError.yourName" class="error">氏名は20文字以内で入力してください</p>
+
             電話番号
             <input type="tel" v-model.number="contact.tel">
             <!-- .numberを使うことで、文字列ではなく数列でデータを取り出すことができる -->
@@ -80,9 +88,10 @@
                     attracts: [],
                     caution: false
                 },
-                errors: [
-
-                ]
+                errors: [],
+                hasError: {
+                    yourName: false
+                }
             }
         },
         methods: {
@@ -103,6 +112,22 @@
                 if(!this.errors.length){
                     console.log('送信可能です。')
                 }
+            }
+        },
+        computed: {
+            yourName: {
+                get(){
+                    return this.contact.yourName //値をそのまま返す
+                },
+                set(value){
+                    // console.log(value)
+                    if(value.length <= 20){
+                        this.hasError.yourName = false
+                    } else {
+                        this.hasError.yourName = true
+                    }
+                    return this.contact.yourName = value //returnはあってもなくてもいい
+                },
             }
         }
     }) 

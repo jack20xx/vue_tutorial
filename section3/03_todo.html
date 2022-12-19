@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+        /* ulのデフォルトの箇条書きの黒ポチを消している */
+        ul{
+            list-style: none;
+        }
+        .done{
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"> <!--仮想DOM-->
+        <input type="text" v-model="newItem">
+        <button @click.prevent="addItem">追加</button>
+        <input v-model="query">検索
+
+        <ul v-cloak>
+            <li v-for="(todo, index) in filteredList">
+                <!-- チェックを入れるとisDoneがtrueになりチェックが入る -->
+                <input type="checkbox" v-model="todo.isDone">
+                <!-- isDoneがtrueになったら横線を入れる -->
+                <span :class="{done: todo.isDone}">{{ todo.item }}</span>
+                <button @click="deleteItem(index)">削除</button>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+    let app = new Vue({
+        el: '#app', 
+        data(){ 
+            return {
+                newItem: '',
+                todos: [],
+                query: ''
+            }
+        },
+        methods: {
+            addItem(){
+                if(!this.newItem) return //値が入っていなかったら、この関数は実行されない
+                    const todo = {
+                        item: this.newItem,
+                        isDone: false
+                    }
+                    this.todos.push(todo)
+                    this.newItem = ''
+            },
+            deleteItem(index){ //何番目を消すかを指定するために引数をindexにする
+                this.todos.splice(index, 1)
+            }
+        },
+        computed: {
+            // filterはコールバック関数が必要なので、thatで置き換える。
+            filteredList(){
+                let that = this
+                return this.todos.filter( todo => {
+                    // indexOfは検索したものが一致しているかを判断する
+                    // 値が入っていない場合、−1を返す仕様になっているので、!で−1でない時に表示するように変更。
+                    return todo.item.indexOf(that.query) !== -1
+                })
+            }
+        }
+    }) 
+
+  
+   
+    </script>
+
+</body>
+</html>
