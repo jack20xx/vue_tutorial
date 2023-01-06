@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"></script>
+    
+    <script>
+        // window.addEventListener('resize', ()=>{
+        //     console.log('リサイズしたよ')
+        // })
+
+        // 頻繁にイベントが起こる場合には、下記のように設定して読み込みを少なくし、サーバーの負担を減らす
+        // 一定時間待った後に動作する
+        window.addEventListener('resize', _.debounce(()=>{
+            console.log('debounceでリサイズ')
+        }, 3000))
+
+        // 動作した後に一定時間待つ
+        window.addEventListener('resize', _.throttle(()=>{
+            console.log('throttleでリサイズ')
+        }, 3000))
+
+    </script>
+
+</body>
+</html>
